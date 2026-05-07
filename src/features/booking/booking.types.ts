@@ -4,6 +4,7 @@ export type BookingRequest = {
   name: string;
   phone: string;
   date: string; // ISO date
+  time: string; // HH:mm
   serviceId: string;
   honeypot?: string;
 };
@@ -13,6 +14,7 @@ export type BookingRecord = {
   name: string;
   phone: string;
   date: string;
+  time: string;
   service_id: string;
   user_id: string | null;
   honeypot: string | null;

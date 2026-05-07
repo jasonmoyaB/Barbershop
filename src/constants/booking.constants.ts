@@ -10,6 +10,19 @@ export const EMPTY_BOOKING_FORM: BookingRequest = {
   name:      '',
   phone:     '',
   date:      '',
+  time:      '',
   serviceId: '',
   honeypot:  '',
 };
+
+export const BOOKING_TIME_SLOTS = [
+  '09:00',
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '16:00',
+  '17:00',
+  '18:00',
+  '19:00',
+] as const;

@@ -115,6 +115,7 @@ export default function AdminBookings() {
                 <th>Nombre</th>
                 <th>Teléfono</th>
                 <th>Fecha</th>
+                <th>Hora</th>
                 <th>Servicio</th>
                 <th>Creada</th>
                 <th>Acciones</th>
@@ -127,6 +128,7 @@ export default function AdminBookings() {
                   <td>{booking.name}</td>
                   <td>{booking.phone}</td>
                   <td>{new Date(booking.date).toLocaleDateString('es-ES')}</td>
+                  <td>{booking.time}</td>
                   <td>{booking.service_id}</td>
                   <td>{new Date(booking.created_at).toLocaleDateString('es-ES')}</td>
                   <td>

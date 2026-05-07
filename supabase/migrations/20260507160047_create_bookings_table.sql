@@ -4,6 +4,7 @@ create table public.bookings (
   name text not null,
   phone text not null,
   date date not null,
+  time time not null,
   service_id text not null,
   honeypot text,
   created_at timestamptz not null default now(),
@@ -12,6 +13,9 @@ create table public.bookings (
 
 -- Create index on date for faster queries
 create index bookings_date_idx on public.bookings (date desc);
+
+-- Create composite index on date + time
+create index bookings_date_time_idx on public.bookings (date, time);
 
 -- Create index on created_at for admin dashboard
 create index bookings_created_at_idx on public.bookings (created_at desc);
