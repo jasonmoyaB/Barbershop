@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import type { BookingRequest, FormFieldProps } from './booking.types';
 import { validateBooking } from '../../utils/validate';
-import { postJSON } from '../../services/api';
+import { supabase } from '../../utils/supabase';
+import { useAuth } from '../../contexts/AuthContext';
 import { BOOKING_SERVICES, EMPTY_BOOKING_FORM } from '../../constants/booking.constants';
 
 /* ─── FormField — Single Responsibility: render one labelled field ── */
@@ -22,6 +23,7 @@ export default function BookingForm() {
   const [errors, setErrors]   = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const { user } = useAuth();
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -32,6 +34,13 @@ export default function BookingForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    
+    // Check authentication
+    if (!user) {
+      setErrors(['Debes iniciar sesión para reservar una cita']);
+      return;
+    }
+    
     const validationErrors = validateBooking(form);
     if (validationErrors.length) {
       setErrors(validationErrors);
@@ -39,12 +48,25 @@ export default function BookingForm() {
     }
     setErrors([]);
     setLoading(true);
-    const res = await postJSON<BookingRequest, { id: string }>('/api/bookings', form);
+    
+    // Map form fields to database columns
+    const { error } = await supabase
+      .from('bookings')
+      .insert({
+        name: form.name,
+        phone: form.phone,
+        date: form.date,
+        service_id: form.serviceId,
+        user_id: user.id,
+        honeypot: form.honeypot || null
+      });
+    
     setLoading(false);
-    if (res.ok) {
-      setSuccess(true);
+    
+    if (error) {
+      setErrors([error.message || 'Error al enviar la reserva']);
     } else {
-      setErrors([res.message ?? `Error ${res.status}`]);
+      setSuccess(true);
     }
   }
 
