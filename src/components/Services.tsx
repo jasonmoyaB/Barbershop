@@ -1,20 +1,12 @@
 import React from 'react';
+import type { Service, ServicesProps } from '../types/services.types';
+
+export type { Service };
 
 /**
  * Services — Single Responsibility: display service offerings
  * Open/Closed: services list is injected via props, not hard-coded
  */
-
-export type Service = {
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-};
-
-type ServicesProps = {
-  services: Service[];
-};
 
 export default function Services({ services }: ServicesProps) {
   return (

@@ -1,7 +1,7 @@
 {
-  "name": "El Corte — Barbería",
-  "short_name": "El Corte",
-  "description": "Barbería de precisión — Cortes modernos y afeitados clásicos",
+  "name": "Negro Barbershop",
+  "short_name": "Negro",
+  "description": "Barbería de precisión en Paraíso, Cartago, Costa Rica — Cortes modernos y afeitados clásicos",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#fcfcfb",

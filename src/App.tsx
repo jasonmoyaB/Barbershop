@@ -1,37 +1,12 @@
 import React from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
-import Services, { type Service } from './components/Services';
+import Services from './components/Services';
 import BookingForm from './features/booking/BookingForm';
 import Footer from './components/Footer';
+import { SERVICES, SOCIAL_LINKS } from './constants/app.constants';
 
-/* ─── Static data — Dependency Inversion: App owns data, injects it ── */
-
-const SERVICES: Service[] = [
-  {
-    id: 'cut',
-    name: 'Corte',
-    description: 'Corte de precisión adaptado a tu estilo. Técnica de tijera o máquina, con acabado y moldeado incluidos.',
-    price: 'desde 18 €',
-  },
-  {
-    id: 'beard',
-    name: 'Barba',
-    description: 'Perfilado y arreglo de barba con navaja clásica, vapor caliente y bálsamo hidratante de acabado.',
-    price: 'desde 12 €',
-  },
-  {
-    id: 'combo',
-    name: 'Corte + Barba',
-    description: 'Servicio completo de corte y arreglo de barba. La experiencia definitiva del cuidado masculino.',
-    price: 'desde 28 €',
-  },
-];
-
-const SOCIAL_LINKS = [
-  { label: 'Instagram', href: '#' },
-  { label: 'Facebook',  href: '#' },
-];
+/* ─── Static data lives in constants/app.constants.ts — Dependency Inversion ── */
 
 export default function App() {
   return (
@@ -40,8 +15,9 @@ export default function App() {
 
       <main>
         <Hero
-          name="El Corte"
-          tagline="Cortes de precisión y afeitados clásicos desde 1985."
+          name="Negro Barbershop"
+          tagline="Cortes de precisión y afeitados clásicos en Paraíso, Cartago."
+          location="Paraíso, Cartago"
         />
 
         <Services services={SERVICES} />
@@ -61,7 +37,7 @@ export default function App() {
                 </p>
                 <ul className="booking-info-meta" aria-label="Horario e información">
                   <li className="booking-meta-item">Lun – Sáb, 09:00 – 20:00</li>
-                  <li className="booking-meta-item">Calle del Ejemplo 12, Madrid</li>
+                  <li className="booking-meta-item">Paraíso, Cartago, Costa Rica</li>
                   <li className="booking-meta-item">+34 123 456 789</li>
                 </ul>
               </div>

@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { NAV_ITEMS } from '../constants/nav.constants';
 
 /**
  * Header — Single Responsibility: navigation + scroll-awareness
  * Open/Closed: nav links driven by data, not hard-coded JSX
  */
-
-type NavItem = {
-  label: string;
-  href: string;
-};
-
-const NAV_ITEMS: NavItem[] = [
-  { label: 'Servicios', href: '#services' },
-  { label: 'Reservar',  href: '#book' },
-  { label: 'Contacto',  href: '#contact' },
-];
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -28,8 +18,8 @@ export default function Header() {
   return (
     <header className={`site-header${scrolled ? ' scrolled' : ''}`} role="banner">
       <div className="container header-inner">
-        <a href="#" className="brand" aria-label="El Corte — inicio">
-          El Corte
+        <a href="#" className="brand" aria-label="Negro Barbershop — inicio">
+          Negro Barbershop
         </a>
         <nav aria-label="Navegación principal">
           <ul className="nav">

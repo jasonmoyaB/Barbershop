@@ -1,26 +1,17 @@
 import React from 'react';
+import type { FooterProps } from '../types/footer.types';
 
 /**
  * Footer — Single Responsibility: copyright + social links
  * Open/Closed: social links injected via props
  */
 
-type SocialLink = {
-  label: string;
-  href: string;
-};
-
-type FooterProps = {
-  phone: string;
-  socialLinks: SocialLink[];
-};
-
 export default function Footer({ phone, socialLinks }: FooterProps) {
   return (
     <footer id="contact" className="site-footer" role="contentinfo">
       <div className="container footer-inner">
         <p className="footer-copy">
-          &copy; {new Date().getFullYear()} El Corte &mdash;{' '}
+          &copy; {new Date().getFullYear()} Negro Barbershop &mdash;{' '}
           <a href={`tel:${phone.replace(/\s/g, '')}`}>{phone}</a>
         </p>
         <nav aria-label="Redes sociales">

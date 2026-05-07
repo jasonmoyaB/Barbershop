@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
-import type { BookingRequest } from './booking.types';
+import type { BookingRequest, FormFieldProps } from './booking.types';
 import { validateBooking } from '../../utils/validate';
 import { postJSON } from '../../services/api';
+import { BOOKING_SERVICES, EMPTY_BOOKING_FORM } from '../../constants/booking.constants';
 
 /* ─── FormField — Single Responsibility: render one labelled field ── */
-
-type FormFieldProps = {
-  label: string;
-  htmlFor: string;
-  children: React.ReactNode;
-};
 
 function FormField({ label, htmlFor, children }: FormFieldProps) {
   return (
@@ -22,22 +17,8 @@ function FormField({ label, htmlFor, children }: FormFieldProps) {
 
 /* ─── BookingForm — Single Responsibility: form state + submission ── */
 
-const SERVICES = [
-  { value: 'cut',   label: 'Corte' },
-  { value: 'beard', label: 'Barba' },
-  { value: 'combo', label: 'Corte + Barba' },
-] as const;
-
-const EMPTY_FORM: BookingRequest = {
-  name:      '',
-  phone:     '',
-  date:      '',
-  serviceId: '',
-  honeypot:  '',
-};
-
 export default function BookingForm() {
-  const [form, setForm]       = useState<BookingRequest>(EMPTY_FORM);
+  const [form, setForm]       = useState<BookingRequest>(EMPTY_BOOKING_FORM);
   const [errors, setErrors]   = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -144,7 +125,7 @@ export default function BookingForm() {
           required
         >
           <option value="">Selecciona un servicio</option>
-          {SERVICES.map(({ value, label }) => (
+          {BOOKING_SERVICES.map(({ value, label }) => (
             <option key={value} value={value}>{label}</option>
           ))}
         </select>

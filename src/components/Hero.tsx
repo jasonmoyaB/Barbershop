@@ -1,15 +1,10 @@
 import React from 'react';
+import type { HeroProps } from '../types/hero.types';
 
 /**
  * Hero — Single Responsibility: brand statement + primary CTA
  * Centered, typographic, architectural
  */
-
-type HeroProps = {
-  name: string;
-  tagline: string;
-  location?: string;
-};
 
 export default function Hero({ name, tagline, location = 'Madrid' }: HeroProps) {
   return (
