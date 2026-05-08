@@ -91,7 +91,6 @@ export default function AdminRegister() {
               onChange={handleChange}
               placeholder="Juan Pérez"
               required
-              autoFocus
             />
           </div>
 

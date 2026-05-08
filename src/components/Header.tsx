@@ -43,7 +43,7 @@ export default function Header() {
     <>
       <header className={`site-header${scrolled ? ' scrolled' : ''}`} role="banner">
         <div className="container header-inner">
-          <a href="#" className="brand" aria-label="Negro Barbershop — inicio">
+          <a href="/" className="brand" aria-label="Negro Barbershop — inicio">
             Negro Barbershop
           </a>
 
@@ -106,7 +106,10 @@ export default function Header() {
       {mobileMenuOpen && (
         <div 
           className="mobile-menu-overlay" 
+          role="presentation"
           onClick={() => setMobileMenuOpen(false)}
+          onKeyDown={(e) => e.key === 'Escape' && setMobileMenuOpen(false)}
+          tabIndex={-1}
         ></div>
       )}
 

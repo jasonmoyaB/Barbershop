@@ -89,7 +89,6 @@ export default function Login({ onSuccess, onCancel }: LoginProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="tu@email.com"
             required
-            autoFocus
           />
         </div>
 
