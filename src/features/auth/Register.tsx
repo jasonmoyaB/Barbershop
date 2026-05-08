@@ -67,7 +67,6 @@ export default function Register({ onSuccess, onCancel }: RegisterProps) {
             onChange={handleChange}
             placeholder="Juan Pérez"
             required
-            autoFocus
           />
         </div>
 

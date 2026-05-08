@@ -78,7 +78,6 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@example.com"
               required
-              autoFocus
             />
           </div>
 

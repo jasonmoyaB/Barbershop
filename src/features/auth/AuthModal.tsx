@@ -25,8 +25,18 @@ export default function AuthModal({
   }
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div 
+      className="modal-overlay" 
+      role="dialog"
+      aria-modal="true"
+    >
+      <button 
+        type="button" 
+        className="modal-close-area" 
+        onClick={onClose}
+        aria-label="Cerrar modal"
+      />
+      <div className="modal-content">
         {view === 'login' ? (
           <>
             <Login onSuccess={handleSuccess} onCancel={onClose} />

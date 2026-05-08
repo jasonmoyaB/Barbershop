@@ -2,7 +2,7 @@ export type ApiResponse<T> = { ok: true; data: T } | { ok: false; status: number
 
 const DEFAULT_TIMEOUT = 10000;
 
-async function fetchWithTimeout<T>(url: string, options: RequestInit = {}, timeout = DEFAULT_TIMEOUT): Promise<Response> {
+async function fetchWithTimeout(url: string, options: RequestInit = {}, timeout = DEFAULT_TIMEOUT): Promise<Response> {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
   try {

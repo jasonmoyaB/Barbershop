@@ -91,7 +91,10 @@ export default function AdminLayout() {
       {mobileMenuOpen && (
         <div 
           className="mobile-menu-overlay" 
+          role="presentation"
           onClick={() => setMobileMenuOpen(false)}
+          onKeyDown={(e) => e.key === 'Escape' && setMobileMenuOpen(false)}
+          tabIndex={-1}
         ></div>
       )}
 
