@@ -6,6 +6,7 @@ export function validateBooking(input: BookingRequest): string[] {
   const phoneRegex = /^\+?\d{7,15}$/;
   if (!phoneRegex.test(input.phone)) errors.push('Teléfono inválido');
   if (!input.date || Number.isNaN(Date.parse(input.date))) errors.push('Fecha inválida');
+  if (!input.time) errors.push('Selecciona una hora');
   if (!input.serviceId) errors.push('Selecciona un servicio');
   if (input.honeypot) errors.push('Spam detectado');
   return errors;
