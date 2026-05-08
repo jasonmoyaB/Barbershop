@@ -30,39 +30,34 @@ export default function AdminBookings() {
   async function handleDelete(id: number) {
     if (!confirm('¿Estás seguro de eliminar esta reserva?')) return;
 
-    const { error } = await supabase
-      .from('bookings')
-      .delete()
-      .eq('id', id);
+    const { error } = await supabase.from('bookings').delete().eq('id', id);
 
     if (error) {
       alert('Error al eliminar: ' + error.message);
     } else {
-      setBookings(prev => prev.filter(b => b.id !== id));
+      setBookings((prev) => prev.filter((b) => b.id !== id));
     }
   }
 
   async function handleStatusUpdate(id: number, status: 'approved' | 'rejected') {
-    const { error } = await supabase
-      .from('bookings')
-      .update({ status })
-      .eq('id', id);
+    const { error } = await supabase.from('bookings').update({ status }).eq('id', id);
 
     if (error) {
       alert('Error al actualizar: ' + error.message);
       return;
     }
 
-    setBookings(prev => prev.map(b => (b.id === id ? { ...b, status } : b)));
+    setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
   }
 
-  const filteredBookings = bookings.filter(booking => {
-    const matchesSearch = searchTerm === '' || 
+  const filteredBookings = bookings.filter((booking) => {
+    const matchesSearch =
+      searchTerm === '' ||
       booking.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       booking.phone.includes(searchTerm);
-    
+
     const matchesDate = filterDate === '' || booking.date === filterDate;
-    
+
     return matchesSearch && matchesDate;
   });
 
@@ -81,7 +76,9 @@ export default function AdminBookings() {
 
       <div className="admin-filters">
         <div className="admin-filter-group">
-          <label htmlFor="search" className="admin-filter-label">Buscar</label>
+          <label htmlFor="search" className="admin-filter-label">
+            Buscar
+          </label>
           <input
             id="search"
             type="text"
@@ -91,9 +88,11 @@ export default function AdminBookings() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        
+
         <div className="admin-filter-group">
-          <label htmlFor="date-filter" className="admin-filter-label">Fecha</label>
+          <label htmlFor="date-filter" className="admin-filter-label">
+            Fecha/Día
+          </label>
           <input
             id="date-filter"
             type="date"
@@ -102,7 +101,7 @@ export default function AdminBookings() {
             onChange={(e) => setFilterDate(e.target.value)}
           />
         </div>
-        
+
         {(searchTerm || filterDate) && (
           <button
             className="admin-filter-clear"
@@ -127,11 +126,11 @@ export default function AdminBookings() {
               <tr>
                 <th>Nombre</th>
                 <th>Teléfono</th>
-                <th>Fecha</th>
+                <th>Fecha/Día</th>
                 <th>Hora</th>
                 <th>Servicio</th>
                 <th>Estado</th>
-                <th>Creada</th>
+                <th>Comprobante</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -148,7 +147,20 @@ export default function AdminBookings() {
                       {booking.status}
                     </span>
                   </td>
-                  <td>{new Date(booking.created_at).toLocaleDateString('es-ES')}</td>
+                  <td>
+                    {(booking as { receipt_url?: string }).receipt_url ? (
+                      <a
+                        href={(booking as { receipt_url?: string }).receipt_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="admin-receipt-link"
+                      >
+                        Ver
+                      </a>
+                    ) : (
+                      <span className="admin-receipt-none">Sin comprobante</span>
+                    )}
+                  </td>
                   <td>
                     <div className="admin-action-group">
                       <button
@@ -165,10 +177,7 @@ export default function AdminBookings() {
                       >
                         Rechazar
                       </button>
-                      <button
-                        className="admin-btn-delete"
-                        onClick={() => handleDelete(booking.id)}
-                      >
+                      <button className="admin-btn-delete" onClick={() => handleDelete(booking.id)}>
                         Eliminar
                       </button>
                     </div>

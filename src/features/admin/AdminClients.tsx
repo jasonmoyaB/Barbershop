@@ -20,7 +20,7 @@ export default function AdminClients() {
   }, []);
 
   async function fetchClients() {
-    setState(prev => ({ ...prev, loading: true, error: '' }));
+    setState((prev) => ({ ...prev, loading: true, error: '' }));
 
     const { data, error } = await supabase
       .from('user_profiles')
@@ -30,7 +30,7 @@ export default function AdminClients() {
 
     if (error) {
       console.error('Error fetching clients:', error);
-      setState(prev => ({ ...prev, loading: false, error: error.message }));
+      setState((prev) => ({ ...prev, loading: false, error: error.message }));
       return;
     }
 
@@ -50,9 +50,7 @@ export default function AdminClients() {
       <div className="admin-clients-header">
         <div>
           <h2 className="admin-clients-title">Clientes</h2>
-          <p className="admin-clients-subtitle">
-            {state.items.length} usuarios registrados
-          </p>
+          <p className="admin-clients-subtitle">{state.items.length} usuarios registrados</p>
         </div>
       </div>
 

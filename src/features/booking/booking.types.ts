@@ -7,6 +7,7 @@ export type BookingRequest = {
   time: string; // HH:mm
   serviceId: string;
   honeypot?: string;
+  receiptUrl?: string;
 };
 
 export type BookingRecord = {
@@ -21,8 +22,8 @@ export type BookingRecord = {
   honeypot: string | null;
   created_at: string;
   updated_at: string;
+  receipt_url?: string;
 };
-
 
 export type FormFieldProps = {
   label: string;

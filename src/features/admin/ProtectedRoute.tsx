@@ -28,14 +28,16 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   }, []);
 
   async function checkAuth() {
-    const { data: { session } } = await supabase.auth.getSession();
-    
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
     if (session?.user) {
       await checkAdminRole(session.user.id);
     } else {
       setIsAuthenticated(false);
     }
-    
+
     setIsChecking(false);
   }
 

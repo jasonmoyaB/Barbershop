@@ -18,9 +18,9 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
     e.preventDefault();
     setError('');
     setLoading(true);
-    
+
     console.log('Intentando login con:', { email, passwordLength: password.length });
-    
+
     const { data, error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
@@ -55,7 +55,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
       onLogin();
       navigate('/admin', { replace: true });
     }
-    
+
     setLoading(false);
   }
 
@@ -64,7 +64,7 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
       <div className="admin-login-card">
         <h1 className="admin-login-title">Panel de Administración</h1>
         <p className="admin-login-subtitle">Negro Barbershop</p>
-        
+
         <form onSubmit={handleSubmit} className="admin-login-form">
           <div className="form-field">
             <label htmlFor="admin-email" className="form-label">
@@ -119,13 +119,13 @@ export default function AdminLogin({ onLogin }: AdminLoginProps) {
               </button>
             </div>
           </div>
-          
+
           {error && (
             <div className="form-errors" role="alert">
               <p>{error}</p>
             </div>
           )}
-          
+
           <button type="submit" className="form-submit" disabled={loading}>
             {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
           </button>

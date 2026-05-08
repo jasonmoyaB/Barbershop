@@ -25,14 +25,10 @@ export default function AuthModal({
   }
 
   return (
-    <div 
-      className="modal-overlay" 
-      role="dialog"
-      aria-modal="true"
-    >
-      <button 
-        type="button" 
-        className="modal-close-area" 
+    <div className="modal-overlay" role="dialog" aria-modal="true">
+      <button
+        type="button"
+        className="modal-close-area"
         onClick={onClose}
         aria-label="Cerrar modal"
       />
@@ -42,11 +38,7 @@ export default function AuthModal({
             <Login onSuccess={handleSuccess} onCancel={onClose} />
             <p className="auth-toggle">
               ¿No tienes cuenta?{' '}
-              <button
-                type="button"
-                className="auth-toggle-btn"
-                onClick={() => setView('register')}
-              >
+              <button type="button" className="auth-toggle-btn" onClick={() => setView('register')}>
                 Regístrate aquí
               </button>
             </p>
@@ -56,11 +48,7 @@ export default function AuthModal({
             <Register onSuccess={handleSuccess} onCancel={onClose} />
             <p className="auth-toggle">
               ¿Ya tienes cuenta?{' '}
-              <button
-                type="button"
-                className="auth-toggle-btn"
-                onClick={() => setView('login')}
-              >
+              <button type="button" className="auth-toggle-btn" onClick={() => setView('login')}>
                 Inicia sesión
               </button>
             </p>

@@ -23,9 +23,7 @@ export default function Services({ services }: ServicesProps) {
               role="listitem"
               aria-label={service.name}
             >
-              <span className="service-number">
-                {String(index + 1).padStart(2, '0')}
-              </span>
+              <span className="service-number">{String(index + 1).padStart(2, '0')}</span>
               <h3 className="service-name">{service.name}</h3>
               <p className="service-desc">{service.description}</p>
               <span className="service-price">{service.price}</span>

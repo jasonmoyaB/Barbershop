@@ -14,9 +14,9 @@ export default function AdminRegister() {
   const [success, setSuccess] = useState(false);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   }
 
@@ -76,7 +76,7 @@ export default function AdminRegister() {
       <div className="admin-login-card">
         <h1 className="admin-login-title">Registrar Administrador</h1>
         <p className="admin-login-subtitle">Negro Barbershop</p>
-        
+
         <form onSubmit={handleSubmit} className="admin-login-form">
           <div className="form-field">
             <label htmlFor="fullName" className="form-label">
@@ -126,13 +126,13 @@ export default function AdminRegister() {
               minLength={6}
             />
           </div>
-          
+
           {error && (
             <div className="form-errors" role="alert">
               <p>{error}</p>
             </div>
           )}
-          
+
           <button type="submit" className="form-submit" disabled={loading}>
             {loading ? 'Registrando...' : 'Registrar Administrador'}
           </button>

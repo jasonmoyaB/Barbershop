@@ -6,7 +6,7 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 console.log('Supabase Config:', {
   url: supabaseUrl,
   keyPrefix: supabaseKey?.substring(0, 20) + '...',
-  keyLength: supabaseKey?.length
+  keyLength: supabaseKey?.length,
 });
 
 if (!supabaseUrl || !supabaseKey) {

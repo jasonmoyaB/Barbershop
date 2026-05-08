@@ -17,7 +17,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/admin/register" element={<AdminRegister />} />
-          
+
           <Route
             path="/admin"
             element={
@@ -26,11 +26,11 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-          <Route index element={<AdminDashboard />} />
-          <Route path="bookings" element={<AdminBookings />} />
-          <Route path="clients" element={<AdminClients />} />
-          <Route path="hours" element={<AdminHours />} />
-        </Route>
+            <Route index element={<AdminDashboard />} />
+            <Route path="bookings" element={<AdminBookings />} />
+            <Route path="clients" element={<AdminClients />} />
+            <Route path="hours" element={<AdminHours />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

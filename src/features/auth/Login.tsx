@@ -142,12 +142,7 @@ export default function Login({ onSuccess, onCancel }: LoginProps) {
         </button>
 
         {onCancel && (
-          <button
-            type="button"
-            className="form-cancel"
-            onClick={onCancel}
-            disabled={loading}
-          >
+          <button type="button" className="form-cancel" onClick={onCancel} disabled={loading}>
             Cancelar
           </button>
         )}

@@ -4,16 +4,16 @@
    ═══════════════════════════════════════════════════════════ */
 
 :root {
-  --bg:        #fcfcfb;
-  --text:      #0a0a0a;
-  --muted:     #6b6b6b;
-  --border:    #e0e0e0;
-  --accent:    #0a0a0a;
-  
+  --bg: #fcfcfb;
+  --text: #0a0a0a;
+  --muted: #6b6b6b;
+  --border: #e0e0e0;
+  --accent: #0a0a0a;
+
   --container: 920px;
-  --font:      'Epilogue', -apple-system, system-ui, sans-serif;
-  
-  --ease:      cubic-bezier(.25, .1, .25, 1);
+  --font: 'Epilogue', -apple-system, system-ui, sans-serif;
+
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
 
   --admin-bg: #ffffff;
   --admin-panel: #f6f6f6;
@@ -29,7 +29,9 @@
 }
 
 /* ─── RESET ────────────────────────────────────────────────── */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -291,7 +293,7 @@ body {
   border-right: none;
 }
 
-.service-item:nth-last-child(-n+3) {
+.service-item:nth-last-child(-n + 3) {
   border-bottom: none;
 }
 
@@ -596,13 +598,30 @@ body {
   color: var(--muted);
 }
 
-.form-input[type="date"]::-webkit-calendar-picker-indicator {
+.form-hint {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.form-file-input {
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0.15rem 0;
+  width: 100%;
+}
+
+.form-input[type='date']::-webkit-calendar-picker-indicator {
   filter: opacity(0.4);
   cursor: pointer;
   transition: opacity 300ms var(--ease);
 }
 
-.form-input[type="date"]::-webkit-calendar-picker-indicator:hover {
+.form-input[type='date']::-webkit-calendar-picker-indicator:hover {
   opacity: 1;
 }
 
@@ -801,8 +820,12 @@ body {
 }
 
 @keyframes slideIn {
-  from { transform: translateY(-100%); }
-  to { transform: translateY(0); }
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .mobile-nav {
@@ -884,15 +907,15 @@ body {
   .services-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .service-item {
     border-right: 1px solid var(--border);
   }
-  
+
   .service-item:nth-child(2n) {
     border-right: none;
   }
-  
+
   .booking-layout {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -904,7 +927,7 @@ body {
   .container {
     padding: 0 1.5rem;
   }
-  
+
   .header-inner {
     height: 70px;
     gap: 1rem;
@@ -1100,8 +1123,12 @@ body {
   }
 
   @keyframes slideInMobile {
-    from { transform: translateY(-100%); }
-    to { transform: translateY(0); }
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
   }
 
   .hero {
@@ -1340,7 +1367,8 @@ body {
   border: 1px solid transparent;
   font-size: 14px;
   letter-spacing: 0.02em;
-  transition: border-color 200ms var(--ease), background 200ms var(--ease), transform 200ms var(--ease);
+  transition: border-color 200ms var(--ease), background 200ms var(--ease),
+    transform 200ms var(--ease);
 }
 
 .admin-sidebar-link::after {
@@ -1905,6 +1933,28 @@ body {
   background: rgba(196, 30, 58, 0.08);
 }
 
+.admin-receipt-link {
+  font-size: 12px;
+  font-weight: 500;
+  background: none;
+  border: 1px solid var(--admin-border);
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: all 200ms var(--ease);
+  color: var(--admin-text);
+  text-decoration: none;
+}
+
+.admin-receipt-link:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.admin-receipt-none {
+  font-size: 12px;
+  color: var(--admin-muted);
+}
+
 .admin-empty {
   padding: 4rem 2rem;
   text-align: center;
@@ -1966,15 +2016,15 @@ body {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .admin-stats-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .admin-table-container {
     overflow-x: scroll;
   }
-  
+
   .admin-table {
     min-width: 800px;
   }
@@ -2114,12 +2164,12 @@ body {
   .modal-content {
     padding: 2rem 1.5rem;
   }
-  
+
   .header-user {
     flex-wrap: wrap;
     gap: 0.5rem;
   }
-  
+
   .header-user-name {
     width: 100%;
     text-align: center;

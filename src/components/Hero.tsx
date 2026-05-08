@@ -10,9 +10,7 @@ export default function Hero({ name, tagline, location = 'Madrid' }: HeroProps) 
   return (
     <section className="hero" aria-label="Presentación">
       <div className="container hero-inner">
-        <p className="hero-eyebrow">
-          Barbería · {location}
-        </p>
+        <p className="hero-eyebrow">Barbería · {location}</p>
 
         <h1 className="hero-title">
           <span className="hero-title-accent">{name}</span>
