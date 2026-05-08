@@ -125,7 +125,6 @@ export default function AdminBookings() {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Nombre</th>
                 <th>Teléfono</th>
                 <th>Fecha</th>
@@ -139,7 +138,6 @@ export default function AdminBookings() {
             <tbody>
               {filteredBookings.map((booking) => (
                 <tr key={booking.id}>
-                  <td>{booking.id}</td>
                   <td>{booking.name}</td>
                   <td>{booking.phone}</td>
                   <td>{new Date(booking.date).toLocaleDateString('es-ES')}</td>

@@ -54,9 +54,6 @@ export default function AdminClients() {
             {state.items.length} usuarios registrados
           </p>
         </div>
-        <button className="admin-primary-btn" onClick={fetchClients}>
-          Clientes
-        </button>
       </div>
 
       {state.error && (
