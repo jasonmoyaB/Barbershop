@@ -1,0 +1,767 @@
+[
+  {
+    "id": "TC001",
+    "title": "Submit a booking request successfully",
+    "description": "A guest can complete the booking form with valid details and see a booking confirmation.",
+    "category": "Booking Form",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the name field with a valid customer name"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the phone field with a valid phone number"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid date"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid time"
+      },
+      {
+        "type": "action",
+        "description": "Select a service"
+      },
+      {
+        "type": "action",
+        "description": "Submit the booking form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a booking confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC002",
+    "title": "Book a barber appointment from the homepage",
+    "description": "Verifies that a guest can complete the homepage booking flow and see a confirmation after submitting valid booking details.",
+    "category": "PWA Shell",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the name field with Test Customer"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the contact field with a valid customer contact value"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid date into the date field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid time"
+      },
+      {
+        "type": "action",
+        "description": "Select a service"
+      },
+      {
+        "type": "action",
+        "description": "Submit the booking form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify a booking confirmation is visible"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC003",
+    "title": "Sign in to the protected admin area from a protected route",
+    "description": "An unauthenticated user can sign in with valid admin credentials from a protected route and access the admin shell.",
+    "category": "Admin Authentication and Protection",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the login form with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the login form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the admin shell is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC004",
+    "title": "Log out from the admin shell",
+    "description": "An authenticated admin can sign out from the admin shell and return to the unauthenticated state.",
+    "category": "Admin Authentication and Protection",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Click the logout control"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the admin access flow is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC005",
+    "title": "Return to an unauthenticated state after logging out",
+    "description": "Verifies that an authenticated admin can log out from the shell and no longer access protected admin content afterward.",
+    "category": "Admin Management Pages",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Click the logout control"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify access to the protected admin shell is blocked"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC006",
+    "title": "Register a new admin and enter the admin shell",
+    "description": "A new admin registrant can complete registration and land in the protected admin area.",
+    "category": "Admin Authentication and Protection",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/register"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the registration form with valid admin details"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the admin shell is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC007",
+    "title": "Return to the admin access flow after signing out",
+    "description": "After logging out, an admin cannot stay on protected routes and is kept in the unauthenticated access flow when revisiting admin pages.",
+    "category": "Admin Authentication and Protection",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Click the logout control"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin/hours"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the admin access flow is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC008",
+    "title": "Access the admin dashboard after signing in",
+    "description": "Verifies that an authenticated admin can open the protected admin shell and reach the dashboard content.",
+    "category": "Admin Management Pages",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the admin dashboard shell is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC009",
+    "title": "Register a new admin and reach the protected shell",
+    "description": "Verifies that a new admin registrant can complete registration and enter the protected admin area.",
+    "category": "Admin Management Pages",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/register"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with a valid new admin email"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with a valid new admin password"
+      },
+      {
+        "type": "action",
+        "description": "Submit the registration form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the protected admin shell is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC010",
+    "title": "Block unauthenticated access to protected admin routes",
+    "description": "An unauthenticated user visiting a protected admin route is redirected to the admin access flow instead of the admin shell.",
+    "category": "Admin Authentication and Protection",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin/bookings"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the admin access flow is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC011",
+    "title": "Move through admin bookings clients and hours pages",
+    "description": "An authenticated admin can use the sidebar to navigate between bookings, clients, and hours while the active section changes correctly.",
+    "category": "Admin Authentication and Protection",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Click the bookings section in the admin navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the bookings management page is displayed"
+      },
+      {
+        "type": "action",
+        "description": "Click the clients section in the admin navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the clients management page is displayed"
+      },
+      {
+        "type": "action",
+        "description": "Click the hours section in the admin navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the hours management page is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC012",
+    "title": "Open bookings from the admin shell",
+    "description": "Verifies that an authenticated admin can navigate from the dashboard shell to the bookings management section and see its content.",
+    "category": "Admin Management Pages",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Click the bookings section in the sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify bookings management content is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC013",
+    "title": "Open clients from the admin shell",
+    "description": "Verifies that an authenticated admin can navigate from the dashboard shell to the clients management section and see its content.",
+    "category": "Admin Management Pages",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Click the clients section in the sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify clients management content is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC014",
+    "title": "Browse the homepage hero and services",
+    "description": "A guest can view the homepage brand presentation and services content while scrolling the landing page.",
+    "category": "Public Landing Page",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the hero section is displayed"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the services section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the services content is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC015",
+    "title": "Open working hours from the admin shell",
+    "description": "Verifies that an authenticated admin can navigate from the dashboard shell to the working hours management section and see its content.",
+    "category": "Admin Management Pages",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Click the working hours section in the sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify working hours management content is displayed"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC016",
+    "title": "Keep the sidebar state in sync while switching admin sections",
+    "description": "Verifies that an authenticated admin sees the active sidebar state update as they move between admin sections.",
+    "category": "Admin Management Pages",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the email field with {{LOGIN_USER}}"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the password field with {{LOGIN_PASSWORD}}"
+      },
+      {
+        "type": "action",
+        "description": "Submit the form"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to /admin"
+      },
+      {
+        "type": "action",
+        "description": "Click the bookings section in the sidebar"
+      },
+      {
+        "type": "action",
+        "description": "Click the clients section in the sidebar"
+      },
+      {
+        "type": "action",
+        "description": "Click the working hours section in the sidebar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the active navigation state reflects the current section"
+      }
+    ],
+    "priority": "High"
+  },
+  {
+    "id": "TC017",
+    "title": "Browse the public landing page and reach the booking form",
+    "description": "Verifies that a guest can read the landing page sections and open the booking form on the homepage.",
+    "category": "PWA Shell",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the services section"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the booking form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the hero and booking-related content are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC018",
+    "title": "Show booking validation for missing required details",
+    "description": "A guest who submits the booking form with required details missing sees validation feedback instead of a booking confirmation.",
+    "category": "Booking Form",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Submit the booking form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify booking validation errors are visible"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC019",
+    "title": "See booking availability before submitting a request",
+    "description": "Verifies that a guest can select booking details on the homepage and see available appointment options reflected in the booking flow.",
+    "category": "PWA Shell",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill a valid date into the date field"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid time"
+      },
+      {
+        "type": "action",
+        "description": "Select a service"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify available appointment options are displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC020",
+    "title": "Open footer social links from the homepage",
+    "description": "A guest can reach the footer and open the available social link entry points from the public landing page.",
+    "category": "Public Landing Page",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the footer"
+      },
+      {
+        "type": "action",
+        "description": "Open a footer social link"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the social link destination is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC021",
+    "title": "Install the app and launch the installed experience",
+    "description": "Verifies that a guest can install the PWA from the homepage and relaunch it as an installed app.",
+    "category": "PWA Shell",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the browser install prompt to appear"
+      },
+      {
+        "type": "action",
+        "description": "Install the app from the browser prompt"
+      },
+      {
+        "type": "action",
+        "description": "Launch the installed app"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the installed app experience is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC022",
+    "title": "Navigate the homepage booking section and appointments content",
+    "description": "A guest can move from the landing page into the booking and appointments area to view the booking entry point and scheduling content.",
+    "category": "Public Landing Page",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the booking section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the booking section is displayed"
+      },
+      {
+        "type": "action",
+        "description": "Scroll to the appointments section"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the appointments content is displayed"
+      }
+    ],
+    "priority": "Medium"
+  },
+  {
+    "id": "TC023",
+    "title": "Show booking validation for invalid input",
+    "description": "A guest who enters an invalid booking value sees validation feedback for the incorrect input before the form can be submitted successfully.",
+    "category": "Booking Form",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the name field with a valid customer name"
+      },
+      {
+        "type": "action",
+        "description": "Fill in the phone field with an invalid phone number"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid date"
+      },
+      {
+        "type": "action",
+        "description": "Select a valid time"
+      },
+      {
+        "type": "action",
+        "description": "Select a service"
+      },
+      {
+        "type": "action",
+        "description": "Submit the booking form"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify an input validation error is visible"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC024",
+    "title": "Show booking field validation before submission",
+    "description": "Verifies that a guest sees validation errors when required booking fields are left empty or invalid on the homepage form.",
+    "category": "PWA Shell",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Submit the booking form without entering required details"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify booking validation errors are displayed"
+      }
+    ],
+    "priority": "Low"
+  },
+  {
+    "id": "TC025",
+    "title": "Open the offline fallback after the app is cached",
+    "description": "Verifies that a guest can open the app after caching and see the offline fallback experience when the browser is offline.",
+    "category": "PWA Shell",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Wait for the app assets to be cached"
+      },
+      {
+        "type": "action",
+        "description": "Open the app offline"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the offline fallback experience is displayed"
+      }
+    ],
+    "priority": "Low"
+  }
+]
