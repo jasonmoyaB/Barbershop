@@ -111,7 +111,7 @@ export default function MyAppointments() {
 
       {!state.error && state.items.length > 0 && (
         <div className="my-appointments-grid">
-          {state.items.map((appointment) => (
+          {state.items.slice(0, 3).map((appointment) => (
             <article key={appointment.id} className="my-appointments-item">
               <div className="my-appointments-meta">
                 <p className="my-appointments-date">

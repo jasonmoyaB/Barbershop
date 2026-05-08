@@ -336,6 +336,10 @@ body {
   margin: 0 auto;
 }
 
+.booking-layout > div {
+  padding-top: 0.5rem;
+}
+
 .booking-info-title {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 300;
@@ -488,11 +492,15 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  padding: 2.5rem 2.25rem;
+  box-shadow: 0 12px 40px rgba(10, 10, 10, 0.08);
 }
 
 .form-field {
   position: relative;
-  padding: 1.5rem 0;
+  padding: 1.25rem 0;
   border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -522,12 +530,12 @@ body {
 .form-select {
   font-family: var(--font);
   font-size: 15px;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--text);
   background: transparent;
   border: none;
   outline: none;
-  padding: 0;
+  padding: 0.15rem 0;
   width: 100%;
   appearance: none;
   -webkit-appearance: none;
@@ -571,7 +579,7 @@ body {
 
 .form-input::placeholder {
   color: var(--muted);
-  opacity: 0.4;
+  opacity: 0.6;
 }
 
 .form-select {
@@ -599,7 +607,7 @@ body {
 }
 
 .form-actions {
-  padding-top: 2.5rem;
+  padding-top: 2.25rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -612,7 +620,7 @@ body {
   letter-spacing: 0.05em;
   color: var(--bg);
   background: var(--text);
-  padding: 1.1rem 2.5rem;
+  padding: 1.15rem 2.75rem;
   border: 1px solid var(--text);
   cursor: pointer;
   transition: all 300ms var(--ease);
