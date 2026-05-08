@@ -1,0 +1,128 @@
+version: "2"
+type: frontend
+tech_stack:
+  - TypeScript
+  - React 18
+  - React Router
+  - Vite
+  - Supabase
+  - PWA
+routes:
+  - path: /
+    file: src/pages/HomePage.tsx
+    auth_required: false
+    description: Public landing page with hero, services, booking form, appointments section, and footer
+  - path: /admin/register
+    file: src/features/admin/AdminRegister.tsx
+    auth_required: false
+    description: Admin registration page
+  - path: /admin
+    file: src/features/admin/AdminLayout.tsx
+    auth_required: true
+    description: Protected admin dashboard shell
+  - path: /admin/bookings
+    file: src/features/admin/AdminBookings.tsx
+    auth_required: true
+    description: Admin bookings management page
+  - path: /admin/clients
+    file: src/features/admin/AdminClients.tsx
+    auth_required: true
+    description: Admin clients management page
+  - path: /admin/hours
+    file: src/features/admin/AdminHours.tsx
+    auth_required: true
+    description: Admin working hours management page
+features:
+  - name: Public Landing Page
+    description: Displays the barber shop brand, services, booking entry point, and footer links
+    files:
+      - src/pages/HomePage.tsx
+      - src/components/Header.tsx
+      - src/components/Hero.tsx
+      - src/components/Services.tsx
+      - src/components/Footer.tsx
+      - src/styles/index.css
+    entry_route: /
+    user_interactions:
+      - Open the homepage
+      - Scroll through the hero and services sections
+      - Click navigation anchors
+      - Open footer social links
+    api_calls: []
+    auth_required: false
+  - name: Booking Form
+    description: Collects booking details and validates availability through Supabase before inserting a booking
+    files:
+      - src/features/booking/BookingForm.tsx
+      - src/utils/validate.ts
+      - src/constants/booking.constants.ts
+      - src/features/booking/booking.types.ts
+    entry_route: /
+    user_interactions:
+      - Fill in name, phone, date, time, and service
+      - Submit the booking form
+      - See validation errors for incomplete or invalid data
+      - See slot availability states and success or error feedback
+    api_calls:
+      - method: SELECT
+        endpoint: supabase.from('work_hours')
+      - method: SELECT
+        endpoint: supabase.from('bookings')
+      - method: INSERT
+        endpoint: supabase.from('bookings')
+    auth_required: true
+  - name: Admin Authentication and Protection
+    description: Protects admin routes and supports logout through the auth context and Supabase session state
+    files:
+      - src/contexts/AuthContext.tsx
+      - src/features/admin/ProtectedRoute.tsx
+      - src/features/admin/AdminLayout.tsx
+      - src/features/auth/Login.tsx
+      - src/features/auth/Register.tsx
+      - src/features/admin/AdminLogin.tsx
+    entry_route: /admin
+    user_interactions:
+      - Visit a protected admin route
+      - Redirect when not authenticated
+      - Log out from the admin shell
+      - Access registration or login screens
+    api_calls:
+      - method: AUTH
+        endpoint: supabase.auth.signOut
+    auth_required: false
+  - name: Admin Management Pages
+    description: Renders the admin dashboard sections for bookings, clients, and working hours
+    files:
+      - src/features/admin/AdminDashboard.tsx
+      - src/features/admin/AdminBookings.tsx
+      - src/features/admin/AdminClients.tsx
+      - src/features/admin/AdminHours.tsx
+      - src/features/admin/AdminLayout.tsx
+    entry_route: /admin
+    user_interactions:
+      - Open each admin sidebar route
+      - Confirm the active navigation state changes
+      - View the dashboard content in the admin shell
+    api_calls: []
+    auth_required: true
+  - name: PWA Shell
+    description: Provides installable app metadata, offline fallback, and service worker support
+    files:
+      - vite.config.ts
+      - public/manifest.json
+      - public/offline.html
+      - index.html
+    entry_route: /
+    user_interactions:
+      - Load the app in a browser
+      - Install the app where supported
+      - Open the app offline after assets are cached
+    api_calls: []
+    auth_required: false
+known_limitations:
+  - issue: Booking submission depends on a backend and Supabase configuration that may not be available in local test runs
+    location: src/features/booking/BookingForm.tsx
+    impact: Submit flow may fail unless APIs and auth are mocked
+  - issue: Admin routes require authentication state and may redirect during unauthenticated tests
+    location: src/features/admin/ProtectedRoute.tsx
+    impact: Tests need auth setup or route mocking

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { BookingRequest, FormFieldProps } from './booking.types';
 import { validateBooking } from '../../utils/validate';
-import { postJSON } from '../../services/api';
-import { BOOKING_SERVICES, EMPTY_BOOKING_FORM } from '../../constants/booking.constants';
+import { supabase } from '../../utils/supabase';
+import { useAuth } from '../../contexts/AuthContext';
+import { BOOKING_SERVICES, BOOKING_TIME_SLOTS, EMPTY_BOOKING_FORM } from '../../constants/booking.constants';
 
 /* ─── FormField — Single Responsibility: render one labelled field ── */
 
@@ -22,6 +23,18 @@ export default function BookingForm() {
   const [errors, setErrors]   = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [isSlotChecking, setIsSlotChecking] = useState(false);
+  const [inactiveSlots, setInactiveSlots] = useState<Set<string>>(new Set());
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (!form.date) {
+      setInactiveSlots(new Set());
+      return;
+    }
+
+    void fetchInactiveSlots(form.date);
+  }, [form.date]);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -30,21 +43,107 @@ export default function BookingForm() {
     setForm(prev => ({ ...prev, [name as keyof BookingRequest]: value } as BookingRequest));
   }
 
+  async function isSlotAvailable() {
+    if (!form.date || !form.time) return true;
+    setIsSlotChecking(true);
+    const { data: availability, error: availabilityError } = await supabase
+      .from('work_hours')
+      .select('is_active')
+      .eq('date', form.date)
+      .eq('time', form.time)
+      .maybeSingle();
+
+    if (availabilityError) {
+      setErrors([availabilityError.message || 'Error al validar disponibilidad']);
+      setIsSlotChecking(false);
+      return false;
+    }
+
+    if (availability && availability.is_active === false) {
+      setErrors(['La hora seleccionada no está disponible']);
+      setIsSlotChecking(false);
+      return false;
+    }
+
+    const { data, error } = await supabase
+      .from('bookings')
+      .select('id')
+      .eq('date', form.date)
+      .eq('time', form.time)
+      .limit(1);
+    setIsSlotChecking(false);
+    if (error) {
+      setErrors([error.message || 'Error al validar disponibilidad']);
+      return false;
+    }
+    return !data || data.length === 0;
+  }
+
+  async function fetchInactiveSlots(date: string) {
+    const { data, error } = await supabase
+      .from('work_hours')
+      .select('time, is_active')
+      .eq('date', date);
+
+    if (error) {
+      console.error('Error fetching availability:', error);
+      setInactiveSlots(new Set());
+      return;
+    }
+
+    const nextInactive = new Set<string>();
+    (data || []).forEach((row: { time: string; is_active: boolean }) => {
+      if (row.is_active === false) {
+        nextInactive.add(row.time.slice(0, 5));
+      }
+    });
+
+    setInactiveSlots(nextInactive);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    
+    // Check authentication
+    if (!user) {
+      setErrors(['Debes iniciar sesión para reservar una cita']);
+      return;
+    }
+    
     const validationErrors = validateBooking(form);
     if (validationErrors.length) {
       setErrors(validationErrors);
       return;
     }
     setErrors([]);
+    const slotAvailable = await isSlotAvailable();
+    if (!slotAvailable) {
+      if (errors.length === 0) {
+        setErrors(['La hora seleccionada ya está ocupada']);
+      }
+      return;
+    }
     setLoading(true);
-    const res = await postJSON<BookingRequest, { id: string }>('/api/bookings', form);
+    
+    // Map form fields to database columns
+    const { error } = await supabase
+      .from('bookings')
+      .insert({
+        name: form.name,
+        phone: form.phone,
+        date: form.date,
+        service_id: form.serviceId,
+        time: form.time,
+        user_id: user.id,
+        honeypot: form.honeypot || null
+      });
+    
     setLoading(false);
-    if (res.ok) {
-      setSuccess(true);
+    
+    if (error) {
+      setErrors([error.message || 'Error al enviar la reserva']);
     } else {
-      setErrors([res.message ?? `Error ${res.status}`]);
+      setSuccess(true);
     }
   }
 
@@ -115,6 +214,30 @@ export default function BookingForm() {
         />
       </FormField>
 
+      <FormField label="Hora" htmlFor="booking-time">
+        <select
+          id="booking-time"
+          className="form-select"
+          name="time"
+          value={form.time}
+          onChange={handleChange}
+          required
+        >
+          <option value="">Selecciona una hora</option>
+          {BOOKING_TIME_SLOTS.map((slot) => {
+            const isInactive = inactiveSlots.has(slot);
+            return (
+              <option key={slot} value={slot} disabled={isInactive}>
+                {slot} {isInactive ? '— No disponible' : '— Disponible'}
+              </option>
+            );
+          })}
+        </select>
+        {form.date && inactiveSlots.size > 0 && (
+          <p className="booking-slot-hint">Las horas marcadas como no disponibles no se pueden reservar.</p>
+        )}
+      </FormField>
+
       <FormField label="Servicio" htmlFor="booking-service">
         <select
           id="booking-service"
@@ -135,10 +258,10 @@ export default function BookingForm() {
         <button
           type="submit"
           className="form-submit"
-          disabled={loading}
-          aria-busy={loading}
+          disabled={loading || isSlotChecking}
+          aria-busy={loading || isSlotChecking}
         >
-          {loading ? 'Enviando…' : 'Reservar cita'}
+          {loading ? 'Enviando…' : isSlotChecking ? 'Validando…' : 'Reservar cita'}
         </button>
       </div>
 

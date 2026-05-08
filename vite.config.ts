@@ -2,8 +2,9 @@ import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
 // Use dynamic import for ESM-only plugins to avoid require() issues in some environments
-export default defineConfig(async () => {
+export default defineConfig(async ({ command }) => {
   const reactPlugin = (await import('@vitejs/plugin-react')).default;
+  const isDev = command === 'serve';
   
   return {
     plugins: [
@@ -38,52 +39,54 @@ export default defineConfig(async () => {
           ]
         },
 
-        workbox: {
-          globPatterns: ['**/*.{js,css,html,svg,png,woff,woff2}'],
-          
-          // Cache Google Fonts
-          runtimeCaching: [
-            {
-              urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'google-fonts-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+        workbox: isDev
+          ? undefined
+          : {
+              globPatterns: ['**/*.{js,css,html,svg,png,woff,woff2}'],
+
+              // Cache Google Fonts
+              runtimeCaching: [
+                {
+                  urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
+                  handler: 'CacheFirst',
+                  options: {
+                    cacheName: 'google-fonts-cache',
+                    expiration: {
+                      maxEntries: 10,
+                      maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                    },
+                    cacheableResponse: {
+                      statuses: [0, 200]
+                    }
+                  }
                 },
-                cacheableResponse: {
-                  statuses: [0, 200]
-                }
-              }
-            },
-            {
-              urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
-              handler: 'CacheFirst',
-              options: {
-                cacheName: 'gstatic-fonts-cache',
-                expiration: {
-                  maxEntries: 10,
-                  maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                {
+                  urlPattern: /^https:\/\/fonts\.gstatic\.com\/.*/i,
+                  handler: 'CacheFirst',
+                  options: {
+                    cacheName: 'gstatic-fonts-cache',
+                    expiration: {
+                      maxEntries: 10,
+                      maxAgeSeconds: 60 * 60 * 24 * 365 // 1 year
+                    },
+                    cacheableResponse: {
+                      statuses: [0, 200]
+                    }
+                  }
                 },
-                cacheableResponse: {
-                  statuses: [0, 200]
+                {
+                  urlPattern: /\/api\/.*/i,
+                  handler: 'NetworkOnly'
                 }
-              }
+              ],
+
+              // Offline fallback - serve offline.html when navigation fails
+              navigateFallback: '/offline.html',
+              navigateFallbackDenylist: [/^\/api/]
             },
-            {
-              urlPattern: /\/api\/.*/i,
-              handler: 'NetworkOnly'
-            }
-          ],
-          
-          // Offline fallback - serve offline.html when navigation fails
-          navigateFallback: '/offline.html',
-          navigateFallbackDenylist: [/^\/api/],
-        },
 
         devOptions: {
-          enabled: false
+          enabled: true
         }
       })
     ],

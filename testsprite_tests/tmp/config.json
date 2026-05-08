@@ -1,0 +1,17 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "executionArgs": {
+    "projectName": "MCP",
+    "projectPath": "C:\\Users\\jason\\OneDrive\\Documents\\MCP",
+    "testIds": [],
+    "additionalInstruction": "",
+    "serverMode": "production",
+    "envs": {
+      "API_KEY": "sk-user-RHppztcWtxaCurB7fvaFz6fNXOjY-SJJFmSr9S11df8IRJXdPQclsdKJXx4zBJaEJj4qkiASlwhBHjLP656Ief8AOdhLpP215EzBEEn9-0DvjuYHUVh3fiMlD8i05TW1L0g"
+    }
+  },
+  "serverPort": 60165
+}
