@@ -6,6 +6,8 @@ import AdminLayout from './features/admin/AdminLayout';
 import AdminDashboard from './features/admin/AdminDashboard';
 import AdminBookings from './features/admin/AdminBookings';
 import AdminRegister from './features/admin/AdminRegister';
+import AdminClients from './features/admin/AdminClients';
+import AdminHours from './features/admin/AdminHours';
 import ProtectedRoute from './features/admin/ProtectedRoute';
 
 export default function App() {
@@ -24,9 +26,11 @@ export default function App() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<AdminDashboard />} />
-            <Route path="bookings" element={<AdminBookings />} />
-          </Route>
+          <Route index element={<AdminDashboard />} />
+          <Route path="bookings" element={<AdminBookings />} />
+          <Route path="clients" element={<AdminClients />} />
+          <Route path="hours" element={<AdminHours />} />
+        </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

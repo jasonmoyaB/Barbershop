@@ -16,11 +16,13 @@ export type BookingRecord = {
   date: string;
   time: string;
   service_id: string;
+  status: 'pending' | 'approved' | 'rejected';
   user_id: string | null;
   honeypot: string | null;
   created_at: string;
   updated_at: string;
 };
+
 
 export type FormFieldProps = {
   label: string;

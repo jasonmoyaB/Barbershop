@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type { BookingRequest, FormFieldProps } from './booking.types';
 import { validateBooking } from '../../utils/validate';
 import { supabase } from '../../utils/supabase';
@@ -24,7 +24,17 @@ export default function BookingForm() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [isSlotChecking, setIsSlotChecking] = useState(false);
+  const [inactiveSlots, setInactiveSlots] = useState<Set<string>>(new Set());
   const { user } = useAuth();
+
+  useEffect(() => {
+    if (!form.date) {
+      setInactiveSlots(new Set());
+      return;
+    }
+
+    void fetchInactiveSlots(form.date);
+  }, [form.date]);
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -36,6 +46,25 @@ export default function BookingForm() {
   async function isSlotAvailable() {
     if (!form.date || !form.time) return true;
     setIsSlotChecking(true);
+    const { data: availability, error: availabilityError } = await supabase
+      .from('work_hours')
+      .select('is_active')
+      .eq('date', form.date)
+      .eq('time', form.time)
+      .maybeSingle();
+
+    if (availabilityError) {
+      setErrors([availabilityError.message || 'Error al validar disponibilidad']);
+      setIsSlotChecking(false);
+      return false;
+    }
+
+    if (availability && availability.is_active === false) {
+      setErrors(['La hora seleccionada no está disponible']);
+      setIsSlotChecking(false);
+      return false;
+    }
+
     const { data, error } = await supabase
       .from('bookings')
       .select('id')
@@ -48,6 +77,28 @@ export default function BookingForm() {
       return false;
     }
     return !data || data.length === 0;
+  }
+
+  async function fetchInactiveSlots(date: string) {
+    const { data, error } = await supabase
+      .from('work_hours')
+      .select('time, is_active')
+      .eq('date', date);
+
+    if (error) {
+      console.error('Error fetching availability:', error);
+      setInactiveSlots(new Set());
+      return;
+    }
+
+    const nextInactive = new Set<string>();
+    (data || []).forEach((row: { time: string; is_active: boolean }) => {
+      if (row.is_active === false) {
+        nextInactive.add(row.time.slice(0, 5));
+      }
+    });
+
+    setInactiveSlots(nextInactive);
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -173,10 +224,18 @@ export default function BookingForm() {
           required
         >
           <option value="">Selecciona una hora</option>
-          {BOOKING_TIME_SLOTS.map((slot) => (
-            <option key={slot} value={slot}>{slot}</option>
-          ))}
+          {BOOKING_TIME_SLOTS.map((slot) => {
+            const isInactive = inactiveSlots.has(slot);
+            return (
+              <option key={slot} value={slot} disabled={isInactive}>
+                {slot} {isInactive ? '— No disponible' : '— Disponible'}
+              </option>
+            );
+          })}
         </select>
+        {form.date && inactiveSlots.size > 0 && (
+          <p className="booking-slot-hint">Las horas marcadas como no disponibles no se pueden reservar.</p>
+        )}
       </FormField>
 
       <FormField label="Servicio" htmlFor="booking-service">

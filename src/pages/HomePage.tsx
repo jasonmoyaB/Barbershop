@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Hero from '../components/Hero';
 import Services from '../components/Services';
 import BookingForm from '../features/booking/BookingForm';
+import MyAppointments from '../features/booking/MyAppointments';
 import Footer from '../components/Footer';
 import { SERVICES, SOCIAL_LINKS } from '../constants/app.constants';
 
@@ -41,6 +42,7 @@ export default function HomePage() {
               </div>
               <BookingForm />
             </div>
+            <MyAppointments />
           </div>
         </section>
       </main>
