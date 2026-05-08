@@ -13,7 +13,7 @@
     "ci": "npm run lint && npm run test",
     "e2e": "playwright test",
     "e2e:headed": "playwright test --headed",
-    "postinstall": "playwright install --with-deps chromium"
+    "postinstall": "playwright install chromium"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.105.3",

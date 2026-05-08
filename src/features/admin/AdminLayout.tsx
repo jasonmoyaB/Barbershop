@@ -28,33 +28,25 @@ export default function AdminLayout() {
           <NavLink
             to="/admin"
             end
-            className={({ isActive }) =>
-              `admin-sidebar-link${isActive ? ' is-active' : ''}`
-            }
+            className={({ isActive }) => `admin-sidebar-link${isActive ? ' is-active' : ''}`}
           >
             Dashboard
           </NavLink>
           <NavLink
             to="/admin/bookings"
-            className={({ isActive }) =>
-              `admin-sidebar-link${isActive ? ' is-active' : ''}`
-            }
+            className={({ isActive }) => `admin-sidebar-link${isActive ? ' is-active' : ''}`}
           >
             Reservas
           </NavLink>
           <NavLink
             to="/admin/clients"
-            className={({ isActive }) =>
-              `admin-sidebar-link${isActive ? ' is-active' : ''}`
-            }
+            className={({ isActive }) => `admin-sidebar-link${isActive ? ' is-active' : ''}`}
           >
             Clientes
           </NavLink>
           <NavLink
             to="/admin/hours"
-            className={({ isActive }) =>
-              `admin-sidebar-link${isActive ? ' is-active' : ''}`
-            }
+            className={({ isActive }) => `admin-sidebar-link${isActive ? ' is-active' : ''}`}
           >
             Horarios
           </NavLink>
@@ -89,8 +81,8 @@ export default function AdminLayout() {
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div 
-          className="mobile-menu-overlay" 
+        <div
+          className="mobile-menu-overlay"
           role="presentation"
           onClick={() => setMobileMenuOpen(false)}
           onKeyDown={(e) => e.key === 'Escape' && setMobileMenuOpen(false)}
@@ -99,7 +91,7 @@ export default function AdminLayout() {
       )}
 
       {/* Mobile Menu */}
-      <nav 
+      <nav
         className={`admin-mobile-menu${mobileMenuOpen ? ' open' : ''}`}
         aria-label="Menú administración"
       >
@@ -107,43 +99,41 @@ export default function AdminLayout() {
           to="/admin"
           end
           onClick={handleNavClick}
-          className={({ isActive }) =>
-            `admin-mobile-link${isActive ? ' is-active' : ''}`
-          }
+          className={({ isActive }) => `admin-mobile-link${isActive ? ' is-active' : ''}`}
         >
           Dashboard
         </NavLink>
         <NavLink
           to="/admin/bookings"
           onClick={handleNavClick}
-          className={({ isActive }) =>
-            `admin-mobile-link${isActive ? ' is-active' : ''}`
-          }
+          className={({ isActive }) => `admin-mobile-link${isActive ? ' is-active' : ''}`}
         >
           Reservas
         </NavLink>
         <NavLink
           to="/admin/clients"
           onClick={handleNavClick}
-          className={({ isActive }) =>
-            `admin-mobile-link${isActive ? ' is-active' : ''}`
-          }
+          className={({ isActive }) => `admin-mobile-link${isActive ? ' is-active' : ''}`}
         >
           Clientes
         </NavLink>
         <NavLink
           to="/admin/hours"
           onClick={handleNavClick}
-          className={({ isActive }) =>
-            `admin-mobile-link${isActive ? ' is-active' : ''}`
-          }
+          className={({ isActive }) => `admin-mobile-link${isActive ? ' is-active' : ''}`}
         >
           Horarios
         </NavLink>
 
         <div className="admin-mobile-divider"></div>
 
-        <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="admin-mobile-logout">
+        <button
+          onClick={() => {
+            handleLogout();
+            setMobileMenuOpen(false);
+          }}
+          className="admin-mobile-logout"
+        >
           Cerrar Sesión
         </button>
       </nav>

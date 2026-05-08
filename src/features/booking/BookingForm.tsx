@@ -3,14 +3,20 @@ import type { BookingRequest, FormFieldProps } from './booking.types';
 import { validateBooking } from '../../utils/validate';
 import { supabase } from '../../utils/supabase';
 import { useAuth } from '../../contexts/AuthContext';
-import { BOOKING_SERVICES, BOOKING_TIME_SLOTS, EMPTY_BOOKING_FORM } from '../../constants/booking.constants';
+import {
+  BOOKING_SERVICES,
+  BOOKING_TIME_SLOTS,
+  EMPTY_BOOKING_FORM,
+} from '../../constants/booking.constants';
 
 /* ─── FormField — Single Responsibility: render one labelled field ── */
 
 function FormField({ label, htmlFor, children }: FormFieldProps) {
   return (
     <div className="form-field">
-      <label className="form-label" htmlFor={htmlFor}>{label}</label>
+      <label className="form-label" htmlFor={htmlFor}>
+        {label}
+      </label>
       {children}
     </div>
   );
@@ -19,12 +25,13 @@ function FormField({ label, htmlFor, children }: FormFieldProps) {
 /* ─── BookingForm — Single Responsibility: form state + submission ── */
 
 export default function BookingForm() {
-  const [form, setForm]       = useState<BookingRequest>(EMPTY_BOOKING_FORM);
-  const [errors, setErrors]   = useState<string[]>([]);
+  const [form, setForm] = useState<BookingRequest>(EMPTY_BOOKING_FORM);
+  const [errors, setErrors] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [isSlotChecking, setIsSlotChecking] = useState(false);
   const [inactiveSlots, setInactiveSlots] = useState<Set<string>>(new Set());
+  const [receiptFile, setReceiptFile] = useState<File | null>(null);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -36,11 +43,34 @@ export default function BookingForm() {
     void fetchInactiveSlots(form.date);
   }, [form.date]);
 
-  function handleChange(
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name as keyof BookingRequest]: value } as BookingRequest));
+    setForm((prev) => ({ ...prev, [name as keyof BookingRequest]: value } as BookingRequest));
+  }
+
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+      const maxSize = 5 * 1024 * 1024;
+      if (file.size > maxSize) {
+        setErrors(['El archivo no puede exceder 5MB']);
+        setReceiptFile(null);
+        return;
+      }
+      const allowedTypes = ['image/', 'application/pdf'];
+      const isAllowed = allowedTypes.some(
+        (type) => file.type.startsWith(type) || type === file.type,
+      );
+      if (!isAllowed) {
+        setErrors(['Solo se permiten imágenes o PDF']);
+        setReceiptFile(null);
+        return;
+      }
+      setReceiptFile(file);
+      setErrors([]);
+    } else {
+      setReceiptFile(null);
+    }
   }
 
   async function isSlotAvailable() {
@@ -103,13 +133,13 @@ export default function BookingForm() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    
+
     // Check authentication
     if (!user) {
       setErrors(['Debes iniciar sesión para reservar una cita']);
       return;
     }
-    
+
     const validationErrors = validateBooking(form);
     if (validationErrors.length) {
       setErrors(validationErrors);
@@ -124,22 +154,39 @@ export default function BookingForm() {
       return;
     }
     setLoading(true);
-    
+
+    let receiptUrl: string | null = null;
+
+    if (receiptFile && user) {
+      const fileName = `${user.id}/${Date.now()}_${receiptFile.name}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage
+        .from('receipts')
+        .upload(fileName, receiptFile, { upsert: true });
+
+      if (uploadError) {
+        setErrors(['Error al subir el comprobante: ' + uploadError.message]);
+        setLoading(false);
+        return;
+      }
+
+      const { data: urlData } = supabase.storage.from('receipts').getPublicUrl(fileName);
+      receiptUrl = urlData.publicUrl;
+    }
+
     // Map form fields to database columns
-    const { error } = await supabase
-      .from('bookings')
-      .insert({
-        name: form.name,
-        phone: form.phone,
-        date: form.date,
-        service_id: form.serviceId,
-        time: form.time,
-        user_id: user.id,
-        honeypot: form.honeypot || null
-      });
-    
+    const { error } = await supabase.from('bookings').insert({
+      name: form.name,
+      phone: form.phone,
+      date: form.date,
+      service_id: form.serviceId,
+      time: form.time,
+      user_id: user.id,
+      honeypot: form.honeypot || null,
+      receipt_url: receiptUrl,
+    });
+
     setLoading(false);
-    
+
     if (error) {
       setErrors([error.message || 'Error al enviar la reserva']);
     } else {
@@ -164,7 +211,15 @@ export default function BookingForm() {
       className="booking-form"
     >
       {/* Honeypot anti-spam (visually hidden) */}
-      <label style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}>
+      <label
+        style={{
+          position: 'absolute',
+          left: '-9999px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden',
+        }}
+      >
         No rellenar
         <input
           name="honeypot"
@@ -234,7 +289,9 @@ export default function BookingForm() {
           })}
         </select>
         {form.date && inactiveSlots.size > 0 && (
-          <p className="booking-slot-hint">Las horas marcadas como no disponibles no se pueden reservar.</p>
+          <p className="booking-slot-hint">
+            Las horas marcadas como no disponibles no se pueden reservar.
+          </p>
         )}
       </FormField>
 
@@ -249,9 +306,33 @@ export default function BookingForm() {
         >
           <option value="">Selecciona un servicio</option>
           {BOOKING_SERVICES.map(({ value, label }) => (
-            <option key={value} value={value}>{label}</option>
+            <option key={value} value={value}>
+              {label}
+            </option>
           ))}
         </select>
+      </FormField>
+
+      <FormField label="Comprobante de pago" htmlFor="booking-receipt">
+        <div className="form-file-wrapper">
+          <input
+            id="booking-receipt"
+            type="file"
+            name="receipt"
+            accept="image/*,.pdf"
+            className="form-file-input"
+            onChange={handleFileChange}
+          />
+          <label htmlFor="booking-receipt" className="form-file-label">
+            <svg className="form-file-label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            {receiptFile ? receiptFile.name : 'Subir archivo'}
+          </label>
+          {receiptFile && <p className="form-file-name">{receiptFile.name}</p>}
+        </div>
       </FormField>
 
       <div className="form-actions">
@@ -268,7 +349,9 @@ export default function BookingForm() {
       {errors.length > 0 && (
         <div className="form-errors" role="alert" aria-live="assertive">
           <ul>
-            {errors.map((err, i) => <li key={i}>{err}</li>)}
+            {errors.map((err, i) => (
+              <li key={i}>{err}</li>
+            ))}
           </ul>
         </div>
       )}

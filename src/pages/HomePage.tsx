@@ -27,12 +27,13 @@ export default function HomePage() {
             <div className="booking-layout">
               <div>
                 <h2 id="booking-form-title" className="booking-info-title">
-                  Reserva tu<br />
+                  Reserva tu
+                  <br />
                   <em>próxima cita.</em>
                 </h2>
                 <p className="booking-info-body">
-                  Elige tu servicio, selecciona la fecha y te confirmamos en menos de 24 horas.
-                  Sin tarjeta de crédito ni registros innecesarios.
+                  Elige tu servicio, selecciona la fecha y te confirmamos en menos de 24 horas. Sin
+                  tarjeta de crédito ni registros innecesarios.
                 </p>
                 <ul className="booking-info-meta" aria-label="Horario e información">
                   <li className="booking-meta-item">Lun – Sáb, 09:00 – 20:00</li>

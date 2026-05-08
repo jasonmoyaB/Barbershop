@@ -99,7 +99,7 @@ export default function AdminHours() {
       setState((prev) => ({
         ...prev,
         items: prev.items.map((item) =>
-          item.id === existing.id ? { ...item, is_active: nextValue } : item
+          item.id === existing.id ? { ...item, is_active: nextValue } : item,
         ),
       }));
       return;
@@ -107,10 +107,7 @@ export default function AdminHours() {
 
     const { data, error } = await supabase
       .from('work_hours')
-      .upsert(
-        { date: selectedDate, time, is_active: false },
-        { onConflict: 'date,time' }
-      )
+      .upsert({ date: selectedDate, time, is_active: false }, { onConflict: 'date,time' })
       .select('*')
       .single();
 
@@ -168,9 +165,7 @@ export default function AdminHours() {
                 type="button"
               >
                 <span>{slot}</span>
-                <span className="admin-hours-status">
-                  {isActive ? 'Activo' : 'Inactivo'}
-                </span>
+                <span className="admin-hours-status">{isActive ? 'Activo' : 'Inactivo'}</span>
               </button>
             );
           })}

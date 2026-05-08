@@ -35,7 +35,7 @@ export default function MyAppointments() {
   async function fetchAppointments() {
     if (!user) return;
 
-    setState(prev => ({ ...prev, loading: true, error: '' }));
+    setState((prev) => ({ ...prev, loading: true, error: '' }));
 
     const { data, error } = await supabase
       .from('bookings')
@@ -45,7 +45,7 @@ export default function MyAppointments() {
 
     if (error) {
       console.error('Error fetching appointments:', error);
-      setState(prev => ({ ...prev, loading: false, error: error.message }));
+      setState((prev) => ({ ...prev, loading: false, error: error.message }));
       return;
     }
 
@@ -61,9 +61,7 @@ export default function MyAppointments() {
       <section className="my-appointments" aria-live="polite">
         <div className="my-appointments-card">
           <h3 className="my-appointments-title">Mis citas</h3>
-          <p className="my-appointments-subtitle">
-            Inicia sesión para ver el estado de tus citas.
-          </p>
+          <p className="my-appointments-subtitle">Inicia sesión para ver el estado de tus citas.</p>
         </div>
       </section>
     );
@@ -85,9 +83,7 @@ export default function MyAppointments() {
       <div className="my-appointments-header">
         <div>
           <h3 className="my-appointments-title">Mis citas</h3>
-          <p className="my-appointments-subtitle">
-            {state.items.length} citas registradas
-          </p>
+          <p className="my-appointments-subtitle">{state.items.length} citas registradas</p>
         </div>
         <button className="my-appointments-refresh" onClick={fetchAppointments}>
           Actualizar
@@ -119,9 +115,7 @@ export default function MyAppointments() {
                 </p>
                 <p className="my-appointments-time">{appointment.time}</p>
               </div>
-              <p className="my-appointments-service">
-                Servicio: {appointment.service_id}
-              </p>
+              <p className="my-appointments-service">Servicio: {appointment.service_id}</p>
               <span
                 className={`my-appointments-status my-appointments-status-${
                   appointment.status || 'pending'

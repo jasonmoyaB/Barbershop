@@ -28,7 +28,9 @@ export default function Header() {
     } else {
       document.body.style.overflow = '';
     }
-    return () => { document.body.style.overflow = ''; };
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [mobileMenuOpen]);
 
   const handleNavClick = () => {
@@ -61,19 +63,13 @@ export default function Header() {
 
             {user ? (
               <div className="header-user">
-                <span className="header-user-name">
-                  {user.full_name || user.email}
-                </span>
+                <span className="header-user-name">{user.full_name || user.email}</span>
                 {isAdmin && (
                   <a href="/admin" className="btn-admin" aria-label="Panel de administración">
                     Admin
                   </a>
                 )}
-                <button
-                  onClick={() => signOut()}
-                  className="btn-logout"
-                  aria-label="Cerrar sesión"
-                >
+                <button onClick={() => signOut()} className="btn-logout" aria-label="Cerrar sesión">
                   Salir
                 </button>
               </div>
@@ -104,8 +100,8 @@ export default function Header() {
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div 
-          className="mobile-menu-overlay" 
+        <div
+          className="mobile-menu-overlay"
           role="presentation"
           onClick={() => setMobileMenuOpen(false)}
           onKeyDown={(e) => e.key === 'Escape' && setMobileMenuOpen(false)}
@@ -114,10 +110,7 @@ export default function Header() {
       )}
 
       {/* Mobile Menu */}
-      <nav 
-        className={`mobile-menu${mobileMenuOpen ? ' open' : ''}`}
-        aria-label="Menú móvil"
-      >
+      <nav className={`mobile-menu${mobileMenuOpen ? ' open' : ''}`} aria-label="Menú móvil">
         <ul className="mobile-nav">
           {NAV_ITEMS.map(({ label, href }) => (
             <li key={href}>
@@ -140,16 +133,22 @@ export default function Header() {
                   Admin
                 </a>
               )}
-              <button 
-                onClick={() => { signOut(); setMobileMenuOpen(false); }} 
+              <button
+                onClick={() => {
+                  signOut();
+                  setMobileMenuOpen(false);
+                }}
                 className="btn-mobile-logout"
               >
                 Salir
               </button>
             </>
           ) : (
-            <button 
-              onClick={() => { setShowAuthModal(true); setMobileMenuOpen(false); }} 
+            <button
+              onClick={() => {
+                setShowAuthModal(true);
+                setMobileMenuOpen(false);
+              }}
               className="btn-mobile-login"
             >
               Login
