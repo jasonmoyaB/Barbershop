@@ -43,6 +43,33 @@ export default function BookingForm() {
     void fetchInactiveSlots(form.date);
   }, [form.date]);
 
+  useEffect(() => {
+    function handlePaste(e: ClipboardEvent) {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+
+      for (const item of items) {
+        if (item.type.startsWith('image/')) {
+          e.preventDefault();
+          const file = item.getAsFile();
+          if (file) {
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+              setErrors(['El archivo no puede exceder 5MB']);
+              return;
+            }
+            setReceiptFile(file);
+            setErrors([]);
+          }
+          return;
+        }
+      }
+    }
+
+    document.addEventListener('paste', handlePaste);
+    return () => document.removeEventListener('paste', handlePaste);
+  }, []);
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name as keyof BookingRequest]: value } as BookingRequest));
@@ -329,7 +356,7 @@ export default function BookingForm() {
               <polyline points="17 8 12 3 7 8" />
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
-            {receiptFile ? receiptFile.name : 'Subir archivo'}
+            {receiptFile ? receiptFile.name : 'Subir archivo o pega una imagen'}
           </label>
           {receiptFile && <p className="form-file-name">{receiptFile.name}</p>}
         </div>
