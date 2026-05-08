@@ -27,16 +27,16 @@ export default function AuthModal({
   return (
     <div 
       className="modal-overlay" 
-      role="presentation"
-      onClick={onClose}
-      onKeyDown={(e) => e.key === 'Escape' && onClose()}
-      tabIndex={-1}
+      role="dialog"
+      aria-modal="true"
     >
-      <section 
-        className="modal-content" 
-        role="document"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <button 
+        type="button" 
+        className="modal-close-area" 
+        onClick={onClose}
+        aria-label="Cerrar modal"
+      />
+      <div className="modal-content">
         {view === 'login' ? (
           <>
             <Login onSuccess={handleSuccess} onCancel={onClose} />
@@ -66,7 +66,7 @@ export default function AuthModal({
             </p>
           </>
         )}
-      </section>
+      </div>
     </div>
   );
 }
