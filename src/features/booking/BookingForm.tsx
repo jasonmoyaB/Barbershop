@@ -314,15 +314,25 @@ export default function BookingForm() {
       </FormField>
 
       <FormField label="Comprobante de pago" htmlFor="booking-receipt">
-        <input
-          id="booking-receipt"
-          type="file"
-          name="receipt"
-          accept="image/*,.pdf"
-          className="form-file-input"
-          onChange={handleFileChange}
-        />
-        <span className="form-hint">Máximo 5MB. Imagen o PDF.</span>
+        <div className="form-file-wrapper">
+          <input
+            id="booking-receipt"
+            type="file"
+            name="receipt"
+            accept="image/*,.pdf"
+            className="form-file-input"
+            onChange={handleFileChange}
+          />
+          <label htmlFor="booking-receipt" className="form-file-label">
+            <svg className="form-file-label-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            {receiptFile ? receiptFile.name : 'Subir archivo'}
+          </label>
+          {receiptFile && <p className="form-file-name">{receiptFile.name}</p>}
+        </div>
       </FormField>
 
       <div className="form-actions">
