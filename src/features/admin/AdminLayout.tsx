@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { supabase } from '../../utils/supabase';
 
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   async function handleLogout() {
     await supabase.auth.signOut();
     navigate('/');
   }
 
+  const handleNavClick = () => {
+    setMobileMenuOpen(false);
+  };
+
   return (
     <div className="admin-layout admin-shell">
+      {/* Desktop Sidebar */}
       <aside className="admin-sidebar">
         <div className="admin-brand">
           <span className="admin-brand-label">Panel</span>
@@ -61,6 +67,83 @@ export default function AdminLayout() {
           </button>
         </div>
       </aside>
+
+      {/* Mobile Header with Hamburger */}
+      <header className="admin-header-mobile">
+        <a href="/admin" className="admin-brand-mobile">
+          <span className="admin-brand-label">Panel</span>
+          <span className="admin-brand-name">Negro Barbershop</span>
+        </a>
+
+        <button
+          className={`hamburger-menu${mobileMenuOpen ? ' active' : ''}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label={mobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
+          aria-expanded={mobileMenuOpen}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div 
+          className="mobile-menu-overlay" 
+          onClick={() => setMobileMenuOpen(false)}
+        ></div>
+      )}
+
+      {/* Mobile Menu */}
+      <nav 
+        className={`admin-mobile-menu${mobileMenuOpen ? ' open' : ''}`}
+        aria-label="Menú administración"
+      >
+        <NavLink
+          to="/admin"
+          end
+          onClick={handleNavClick}
+          className={({ isActive }) =>
+            `admin-mobile-link${isActive ? ' is-active' : ''}`
+          }
+        >
+          Dashboard
+        </NavLink>
+        <NavLink
+          to="/admin/bookings"
+          onClick={handleNavClick}
+          className={({ isActive }) =>
+            `admin-mobile-link${isActive ? ' is-active' : ''}`
+          }
+        >
+          Reservas
+        </NavLink>
+        <NavLink
+          to="/admin/clients"
+          onClick={handleNavClick}
+          className={({ isActive }) =>
+            `admin-mobile-link${isActive ? ' is-active' : ''}`
+          }
+        >
+          Clientes
+        </NavLink>
+        <NavLink
+          to="/admin/hours"
+          onClick={handleNavClick}
+          className={({ isActive }) =>
+            `admin-mobile-link${isActive ? ' is-active' : ''}`
+          }
+        >
+          Horarios
+        </NavLink>
+
+        <div className="admin-mobile-divider"></div>
+
+        <button onClick={() => { handleLogout(); setMobileMenuOpen(false); }} className="admin-mobile-logout">
+          Cerrar Sesión
+        </button>
+      </nav>
 
       <div className="admin-content">
         <header className="admin-topbar">
